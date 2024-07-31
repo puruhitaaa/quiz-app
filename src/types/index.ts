@@ -1,1 +1,2 @@
-export * from './pokemon';
+export * from "./categories"
+export * from "./questions"
