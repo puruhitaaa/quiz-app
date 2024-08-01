@@ -1,40 +1,25 @@
-import { useState } from "react"
-
 import { Button, buttonVariants } from "@/components/ui/button"
 
 import { AlignRight, PuzzleIcon } from "lucide-react"
-// import { defaultLinks } from "@/config/nav";
-// import type { AuthSession } from "@/lib/auth/utils";
-// import SignOutBtn from "./auth/SignOutBtn";
-import { cn } from "@/lib/utils"
 import { Link } from "@tanstack/react-router"
 // @ts-ignore
 import { useSignOut } from "react-supabase"
 import { useAuth } from "@/contexts/auth"
 import { useToast } from "./ui/use-toast"
 // @ts-ignore
-import { useFilter, useSelect } from "react-supabase"
+import AuthDialog from "@/routes/-components/AuthDialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
-  const { session, user } = useAuth()
+  const { session } = useAuth()
   const [_signOutState, signOut] = useSignOut()
 
   const { toast } = useToast()
-
-  const fetchFilter = useFilter(
-    // @ts-ignore
-    (query) => query.eq("userId", user.id),
-    [user?.id!]
-  )
-  const [{ data: quizzes }, _reexecute] = useSelect("quizzes", {
-    columns: "id",
-    filter: fetchFilter,
-    options: {
-      count: "exact",
-      head: false,
-    },
-  })
 
   async function onClickSignOut() {
     const { error } = await signOut()
@@ -56,34 +41,19 @@ export default function Navbar() {
             <span className='sr-only'>Quiz App</span>
           </Link>
 
-          {/* <nav className="md:flex items-center gap-4 hidden">
-          {defaultLinks.map((link) => (
-            <Link
-              key={link.href}
-              className={cn("text-sm", {
-                "text-primary hover:text-primary font-semibold":
-                  pathname === link.href,
-                "text-muted-foreground hover:text-primary":
-                  pathname !== link.href,
-              })}
-              href={link.href}
-            >
-              {link.title}
-            </Link>
-          ))}
-        </nav> */}
-
           <div className='md:inline-flex items-center hidden gap-4'>
-            {quizzes?.length ? (
-              <Link
-                className={buttonVariants({ variant: "secondary", size: "sm" })}
-                to='/quizzes'
-              >
-                Quiz History
-              </Link>
-            ) : null}
             {session ? (
-              <div className='md:block hidden'>
+              <>
+                <Link
+                  className={buttonVariants({
+                    variant: "secondary",
+                    size: "sm",
+                  })}
+                  to='/quizzes'
+                >
+                  Quiz History
+                </Link>
+
                 <Button
                   variant='destructive'
                   size='sm'
@@ -91,17 +61,48 @@ export default function Navbar() {
                 >
                   Sign Out
                 </Button>
-              </div>
-            ) : null}
+              </>
+            ) : (
+              <AuthDialog>
+                <Button size='sm'>Sign In</Button>
+              </AuthDialog>
+            )}
           </div>
 
-          <Button
-            className='md:hidden'
-            variant='ghost'
-            onClick={() => setOpen(!open)}
-          >
-            <AlignRight />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger className='md:hidden block'>
+              <AlignRight className='h-5 w-5' />
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className='md:hidden flex flex-col gap-2 sm:w-56'>
+              {!session ? (
+                <DropdownMenuItem asChild>
+                  <AuthDialog>
+                    <Button size='sm'>Sign In</Button>
+                  </AuthDialog>
+                </DropdownMenuItem>
+              ) : (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      className={buttonVariants({
+                        variant: "secondary",
+                        size: "sm",
+                      })}
+                      to='/quizzes'
+                    >
+                      Quiz History
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Button variant='destructive' size='sm'>
+                      Sign Out
+                    </Button>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>

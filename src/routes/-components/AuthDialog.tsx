@@ -43,6 +43,7 @@ const FormSchema = z.object({
 export default function AuthDialog({
   children,
 }: React.HTMLAttributes<HTMLElement>) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isRegister, setIsRegister] = useState(false)
 
   const { toast } = useToast()
@@ -73,13 +74,14 @@ export default function AuthDialog({
         title: "Error",
         description: error.message,
       })
+    setIsDialogOpen(false)
   }
 
   async function onClickSignUp({
     email,
     password,
   }: z.infer<typeof FormSchema>) {
-    const { error } = await signUp({
+    const { error, user: signedUpUser } = await signUp({
       email,
       password,
     })
@@ -90,6 +92,16 @@ export default function AuthDialog({
         title: "Error",
         description: error.message,
       })
+
+    if (signedUpUser) {
+      toast({
+        variant: "default",
+        title: "Success",
+        description:
+          "Account has been successfully created! please check your email to activate your account.",
+      })
+    }
+    setIsDialogOpen(false)
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -104,7 +116,7 @@ export default function AuthDialog({
   }
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>

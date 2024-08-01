@@ -80,6 +80,15 @@ function QuizId() {
   })
 
   useEffect(() => {
+    if (!fetchingQuizzes && !quiz?.length) {
+      navigate({
+        to: "/",
+        from: location.href,
+      })
+    }
+  }, [fetchingQuizzes, quiz, navigate])
+
+  useEffect(() => {
     if (quiz && quiz[0] && quiz[0].created_at && quiz[0].quizDuration) {
       const createdAt = new Date(quiz[0].created_at)
       const endTime = addMinutes(createdAt, quiz[0].quizDuration).getTime()

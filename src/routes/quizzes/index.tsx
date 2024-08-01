@@ -9,12 +9,21 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useAuth } from "@/contexts/auth"
-import { createFileRoute } from "@tanstack/react-router"
+import type { GetQuizResponse } from "@/types/quizzes"
+import { createFileRoute, redirect } from "@tanstack/react-router"
 // @ts-ignore
 import { useFilter, useSelect } from "react-supabase"
 
 export const Route = createFileRoute("/quizzes/")({
   component: Quizzes,
+  beforeLoad: ({ context, location }) => {
+    if (!context.auth.session) {
+      throw redirect({
+        to: "/",
+        from: location.href,
+      })
+    }
+  },
 })
 
 function Quizzes() {
@@ -57,7 +66,7 @@ function Quizzes() {
             </TableHeader>
             <TableBody>
               {!fetchingQuizzes
-                ? quizzes?.map((quiz) => (
+                ? quizzes?.map((quiz: GetQuizResponse) => (
                     <TableRow key={quiz.id}>
                       <TableCell>{quiz.id}</TableCell>
                       <TableCell>{quiz.incorrectAnswers ?? 0}</TableCell>
