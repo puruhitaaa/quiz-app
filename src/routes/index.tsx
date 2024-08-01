@@ -102,6 +102,7 @@ function Index() {
     } else {
       navigate({
         to: "/quizzes/$quizId",
+        from: location.href,
         params: { quizId: quizData[0].id },
         search: {
           page: 1,
