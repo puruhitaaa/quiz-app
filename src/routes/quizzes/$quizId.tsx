@@ -199,7 +199,7 @@ function QuizId() {
     <div className='relative'>
       <Navbar />
 
-      <section className='py-6 sm:py-12 flex items-center justify-center px-4 md:px-0'>
+      <section className='py-6 sm:py-12 flex items-center justify-center px-4'>
         <div className='w-full max-w-xl bg-card rounded-lg border border-border p-6 flex flex-col gap-6'>
           {!isLoadingQuestion ? (
             question ? (

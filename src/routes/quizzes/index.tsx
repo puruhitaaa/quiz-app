@@ -45,7 +45,7 @@ function Quizzes() {
     <div className='relative'>
       <Navbar />
 
-      <section className='py-6 sm:py-12 gap-6 flex-col flex justify-center px-4 md:px-0 container mx-auto'>
+      <section className='py-6 sm:py-12 gap-6 flex-col flex justify-center px-4'>
         <div>
           <h1 className='text-3xl font-bold'>Quiz History</h1>
           <p className='text-muted-foreground'>

@@ -123,7 +123,7 @@ function Index() {
     <div className='w-full relative'>
       <Navbar />
 
-      <section className='max-w-2xl w-full space-y-6 py-6 sm:py-12 mx-auto'>
+      <section className='max-w-2xl w-full space-y-6 py-6 sm:py-12 px-4 mx-auto'>
         <div className='text-center space-y-2'>
           <h1 className='text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl'>
             Test Your Knowledge with Our Quizzes

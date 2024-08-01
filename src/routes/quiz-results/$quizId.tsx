@@ -37,7 +37,7 @@ function QuizId() {
     <div className='relative'>
       <Navbar />
 
-      <section className='py-6 sm:py-12 flex flex-col items-center justify-center px-4 md:px-0 gap-4'>
+      <section className='py-6 sm:py-12 flex flex-col items-center justify-center px-4 gap-4'>
         {quiz ? (
           <div className='bg-card rounded-lg border p-4 sm:p-6 w-full max-w-md flex flex-col gap-6'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
