@@ -6,4 +6,5 @@ export const router = createRouter({
   context: {
     auth: undefined!,
   },
+  defaultPreloadStaleTime: 0,
 })

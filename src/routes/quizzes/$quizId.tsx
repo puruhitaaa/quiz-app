@@ -25,6 +25,7 @@ export const Route = createFileRoute("/quizzes/$quizId")({
       throw redirect({
         to: "/",
         from: location.href,
+        replace: true,
       })
     }
   },
@@ -80,15 +81,6 @@ function QuizId() {
   })
 
   useEffect(() => {
-    if (!fetchingQuizzes && !quiz?.length) {
-      navigate({
-        to: "/",
-        from: location.href,
-      })
-    }
-  }, [fetchingQuizzes, quiz, navigate])
-
-  useEffect(() => {
     if (quiz && quiz[0] && quiz[0].created_at && quiz[0].quizDuration) {
       const createdAt = new Date(quiz[0].created_at)
       const endTime = addMinutes(createdAt, quiz[0].quizDuration).getTime()
@@ -100,8 +92,8 @@ function QuizId() {
           setTimeLeft(0)
           navigate({
             to: "/quiz-results/$quizId",
+            from: "/quizzes/$quizId",
             params: { quizId: params.quizId },
-            from: location.href,
           })
         } else {
           setTimeLeft(timeRemaining)
@@ -180,6 +172,7 @@ function QuizId() {
     } else {
       navigate({
         to: "/quiz-results/$quizId",
+        from: "/quizzes/$quizId",
         params: {
           quizId: params.quizId,
         },

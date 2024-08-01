@@ -16,11 +16,11 @@ import { useFilter, useSelect } from "react-supabase"
 
 export const Route = createFileRoute("/quizzes/")({
   component: Quizzes,
-  beforeLoad: ({ context, location }) => {
+  beforeLoad: ({ context }) => {
     if (!context.auth.session) {
       throw redirect({
         to: "/",
-        from: location.href,
+        from: "/quizzes",
       })
     }
   },

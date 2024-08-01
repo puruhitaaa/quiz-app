@@ -61,7 +61,7 @@ function Index() {
   const [{ fetching: fetchingSignUp }, _signUp] = useSignUp()
 
   const { toast } = useToast()
-  const navigate = useNavigate({ from: "/" })
+  const navigate = useNavigate()
 
   const [{ fetching: mutatingGameData }, insertGameData] = useInsert("gameData")
   const [{ fetching: mutatingQuizzes }, insertQuizzes] = useInsert("quizzes")
@@ -103,6 +103,7 @@ function Index() {
       navigate({
         to: "/quizzes/$quizId",
         params: { quizId: quizData[0].id },
+        from: "/",
         search: {
           page: 1,
           ...(gameData[0].type ? { type: gameData[0].type } : {}),
